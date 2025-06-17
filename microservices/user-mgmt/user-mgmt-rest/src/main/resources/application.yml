@@ -1,0 +1,31 @@
+server:
+  port: 8081
+
+  servlet:
+    context-path: /user-mgmt
+    
+spring:
+  application:
+    name: user-mgmt
+
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/multimodule_project
+    username: root
+    password: root
+    
+  jpa:
+    hibernate.ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+    
+eureka:
+  client:
+    register-with-eureka: true       # restister to eureka
+    fetch-registry: true    
+    service-url:
+      defaultZone: http://localhost:8761/eureka/    
+      
+      
+      
+      
