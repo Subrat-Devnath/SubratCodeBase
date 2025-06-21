@@ -1,6 +1,7 @@
 package com.user.mgmt.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +13,7 @@ import com.user.mgmt.service.UserService;
 import com.user.mgmt.service.dto.UserDto;
 
 @RestController
-@RequestMapping(path = "/api/v1", consumes = "application/json", produces = "application/json")
+@RequestMapping(path = "/api/v1", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
 	@Autowired
@@ -27,6 +28,11 @@ public class UserController {
 	public boolean addUser(@RequestBody UserDto userDto) {
 		userService.addUser(userDto);
 		return true;
+	}
+
+	@GetMapping("/send-message")
+	public void sendMessageUsingWorkflow() {
+		userService.sendMessageUsingWorkflow();
 	}
 
 }

@@ -12,6 +12,13 @@ spring:
           uri: lb://user-mgmt
           predicates:
             - Path=/user-mgmt/api/v1/**
+            
+        - id: workflow
+          uri: lb://workflow
+          predicates:
+            - Path=/workflow/api/v1/**
+            
+            
 eureka:
   client:
     register-with-eureka: true       # restister to eureka
