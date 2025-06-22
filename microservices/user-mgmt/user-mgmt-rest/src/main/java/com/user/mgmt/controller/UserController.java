@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.user.mgmt.repository.dto.UserDto;
 import com.user.mgmt.service.UserService;
-import com.user.mgmt.service.dto.UserDto;
 
 @RestController
 @RequestMapping(path = "/api/v1", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -19,12 +19,12 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@GetMapping("/{name}")
-	public String pringName(@PathVariable String name) {
-		return name;
+	@GetMapping("/user/{id}")
+	public UserDto getUserById(@PathVariable Long id) {
+		return userService.getUserById(id);
 	}
 
-	@PostMapping("/add")
+	@PostMapping("/user/add")
 	public boolean addUser(@RequestBody UserDto userDto) {
 		userService.addUser(userDto);
 		return true;

@@ -10,7 +10,7 @@ spring:
 
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/multimodule_project
+    url: jdbc:mysql://localhost:3307/microservice
     username: root
     password: root
     
