@@ -13,7 +13,7 @@
 
 	<artifactId>kafka-rest</artifactId>
 	<name>kafka-rest</name>
-	<description>Project for user related apis</description>
+	<description>Project for kafka apis</description>
 	<packaging>jar</packaging>
 
 	<dependencies>
