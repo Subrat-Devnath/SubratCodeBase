@@ -31,8 +31,16 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
-#------------------------------------------------
+##--------- fien properties ---------
 
+user:
+  contextPath: "/user"
+  url: "http://localhost:8081" 
+
+kafka:
+  contextPath: "/kafka"
+  url: "http://localhost:8082"    
+        
 workflow:
   contextPath: "/workflow"
-  url: "http://localhost:8083"
+  url: "http://localhost:8083" 
