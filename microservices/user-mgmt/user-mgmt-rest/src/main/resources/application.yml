@@ -10,9 +10,13 @@ spring:
 
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/microservice
-    username: root
-    password: root
+    #(For local laptop)
+    #url: jdbc:mysql://localhost:3307/microservice  
+    #(for point mysql in host machine (laptop) host.docker.internal)
+    #url: jdbc:mysql://host.docker.internal:3307/microservice
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
     
   jpa:
     hibernate.ddl-auto: update
@@ -24,20 +28,21 @@ eureka:
     register-with-eureka: true       # restister to eureka
     fetch-registry: true    
     service-url:
-      defaultZone: http://localhost:8761/eureka/    
+      #defaultZone: http://localhost:8761/eureka/ 
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}   
       
 ##--------- fien properties ---------
 
 user:
   contextPath: "/user"
-  url: "http://localhost:8081" 
+  url: "http://user-mgmt:8081" 
 
 kafka:
   contextPath: "/kafka"
-  url: "http://localhost:8082"    
+  url: "http://kafka:8082"    
         
 workflow:
   contextPath: "/workflow"
-  url: "http://localhost:8083"      
+  url: "http://workflow:8083"      
 
   
