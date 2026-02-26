@@ -4,6 +4,9 @@ services:
     container_name: service-registry-container
     ports:
       - "8761:8761"
+    environment:
+      - SERVICE_NAME=service-registry
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
     networks:
       - microservices-net
     healthcheck:
@@ -57,7 +60,7 @@ services:
       - SERVICE_NAME=workflow
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/      
       - MYSQL_URL=jdbc:mysql://host.docker.internal:3307/workflows
-      - MYSQL_USERNAME= root
+      - MYSQL_USERNAME=root
       - MYSQL_PASSWORD=root
     networks:
       - microservices-net

@@ -1,4 +1,4 @@
-package com.user.mgmt.repository.dto;
+package com.user.mgmt.client.dtos;
 
 import java.time.LocalDateTime;
 
@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class UserDto {
 
-	private Long id;
+	private String id;
 
 	private String name;
 
@@ -19,7 +19,9 @@ public class UserDto {
 
 	private String password;
 
-	private Boolean isActive;
+	private String passwordSecrest;
+
+	private boolean isActive;
 
 	private int retryCount;
 

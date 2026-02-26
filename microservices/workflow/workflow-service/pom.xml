@@ -28,6 +28,12 @@
 			<version>5.22.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>subrat-code-base</groupId>
+			<artifactId>security-config</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 
 	</dependencies>
 

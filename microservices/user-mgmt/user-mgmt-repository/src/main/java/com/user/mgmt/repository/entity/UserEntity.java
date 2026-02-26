@@ -6,9 +6,10 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import lombok.Data;
 
@@ -20,9 +21,10 @@ public class UserEntity implements Serializable {
 	private static final long serialVersionUID = -5649645038689214691L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(generator = "system-uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "uuid2")
 	@Column(name = "id", nullable = false)
-	private Long id;
+	private String id;
 
 	@Column(name = "name", nullable = false)
 	private String name;
@@ -39,8 +41,11 @@ public class UserEntity implements Serializable {
 	@Column(name = "password")
 	private String password;
 
+	@Column(name = "password_secret")
+	private String passwordSecrest;
+
 	@Column(name = "is_active")
-	private Boolean isActive;
+	private boolean isActive;
 
 	@Column(name = "retry_count")
 	private int retryCount;

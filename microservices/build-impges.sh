@@ -16,6 +16,7 @@ for service in "${services[@]}"; do
   fi
 
   echo "Current directory: $(pwd)"
+
   docker build -t "$service" .
   serviceCount=$((serviceCount + 1))
   echo "Build success $service..."

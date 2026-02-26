@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.user.mgmt.repository.dto.UserDto;
+import com.common.service.dtos.LoginRequest;
+import com.user.mgmt.client.dtos.UserDto;
 import com.user.mgmt.service.UserService;
 
 @RestController
@@ -19,18 +20,28 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@GetMapping("/user/{id}")
-	public UserDto getUserById(@PathVariable Long id) {
-		return userService.getUserById(id);
-	}
-
-	@PostMapping("/user/add")
+	@PostMapping(value = "/user/add")
 	public boolean addUser(@RequestBody UserDto userDto) {
 		userService.addUser(userDto);
 		return true;
 	}
 
-	@GetMapping("/send-message")
+	@GetMapping(value = "/user/{id}")
+	public UserDto getUserById(@PathVariable String id) {
+		return userService.getUserById(id);
+	}
+
+	@GetMapping(value = "/{userName}")
+	public UserDto getUserByUserName(@PathVariable String userName) {
+		return userService.getUserByUserName(userName);
+	}
+
+	@PostMapping(value = "/validate/user")
+	public UserDto validateUserAndGet(@RequestBody LoginRequest uerDetails) {
+		return userService.validateUserAndGet(uerDetails);
+	}
+
+	@GetMapping(value = "/send-message")
 	public void sendMessageUsingWorkflow() {
 		userService.sendMessageUsingWorkflow();
 	}

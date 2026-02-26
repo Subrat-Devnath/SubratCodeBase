@@ -32,6 +32,12 @@
 			<artifactId>jackson-core</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>subrat-code-base</groupId>
+			<artifactId>security-config</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 
 	</dependencies>
 

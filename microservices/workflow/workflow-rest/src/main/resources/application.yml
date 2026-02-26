@@ -39,12 +39,16 @@ eureka:
 
 user:
   contextPath: "/user"
-  url: "http://user-mgmt:8081" 
+  url: "http://127.0.0.1:8081" 
 
 kafka:
   contextPath: "/kafka"
-  url: "http://kafka:8082"    
+  url: "http://127.0.0.1:8082"    
         
 workflow:
   contextPath: "/workflow"
-  url: "http://workflow:8083" 
+  url: "http://127.0.0.1:8083" 
+
+security:
+  contextPath: "/security"
+  url: "http://127.0.0.1:8084"   
