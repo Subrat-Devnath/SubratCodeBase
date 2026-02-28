@@ -1,42 +1,44 @@
-server:
-  port: 8084
 
+server:
+  port: 8083
   servlet:
-    context-path: /security
-    
+    context-path: /workflow  
+      
 spring:
   application:
-    name: security
+    name: workflow
 
+  
+    
   datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     #(For local laptop)
-    #url: jdbc:mysql://localhost:3307/microservice
-    #username: root
-    #password: root
+    #url: jdbc:mysql://localhost:3307/workflows  
     #(for point mysql in host machine (laptop) host.docker.internal)
-    #url: jdbc:mysql://host.docker.internal:3307/microservice
+    #url: jdbc:mysql://host.docker.internal:3307/workflows
     url: ${MYSQL_URL}
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
     
   jpa:
-    hibernate.ddl-auto: update
-    generate-ddl: true
-    show-sql: true
-    
+    hibernate: 
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect  
+
 eureka:
   client:
     register-with-eureka: true       # restister to eureka
     fetch-registry: true    
     service-url:
-      #defaultZone: http://localhost:8761/eureka/
-      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+      #defaultZone: http://localhost:8761/eureka/ 
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE} 
 
 ##--------- fien properties ---------
 
-user-mgmt:
-  contextPath: "/user-mgmt"
+user:
+  contextPath: "/user"
   url: "http://127.0.0.1:8081" 
 
 kafka:
@@ -45,16 +47,15 @@ kafka:
         
 workflow:
   contextPath: "/workflow"
-  url: "http://127.0.0.1:8083"      
+  url: "http://127.0.0.1:8083" 
 
 security:
   contextPath: "/security"
   url: "http://127.0.0.1:8084"
 
-## ----------- SECURITY PROPERTIES -------
-  jwt: 
+  ## ----------- SECURITY PROPERTIES -------
+  jwt:
     secret: bXlTdXBlclNlY3VyZUhTNTEyS2V5VGhhdElzQXRMZWFzdDY0Qnl0ZXNMb25nRm9yU2VjdXJlSldUVG9rZW5TaWduaW5nMTIzNDU2
-    access-ttl-seconds: 36000 
+    access-ttl-seconds: 36000
     refresh-ttl-seconds: 86400
-    issuer: saurabh.com  
-  
+    issuer: saurabh.com

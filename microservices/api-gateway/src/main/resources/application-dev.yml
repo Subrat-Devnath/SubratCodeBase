@@ -1,0 +1,41 @@
+server:
+  port: 8079
+  
+spring:
+  application:
+    name: api-gateway
+    
+  cloud:
+    gateway:
+      routes:
+        - id: user-mgmt
+          uri: lb://user-mgmt
+          predicates:
+            - Path=/user-mgmt/api/v1/**
+            
+        - id: workflow
+          uri: lb://workflow
+          predicates:
+            - Path=/workflow/api/v1/**
+
+        - id: security
+          uri: lb://security
+          predicates:
+            - Path=/security/api/v1/**
+
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          secret-key: 9f4c8a7e2d6b1c3f5e8a9d2c7b4f6a1e3d8c5b7a9f2e4c6d1b3a5e7c9d2f4a69f4c8a7e2d6b1c3f5e8a9d2c7b4f6a1e3d8c5b7a9f2e4c6d1b3a5e7c9d2f4a6            
+            
+eureka:
+  client:
+    register-with-eureka: true       # restister to eureka
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ 
+      #defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}    
+    
+    

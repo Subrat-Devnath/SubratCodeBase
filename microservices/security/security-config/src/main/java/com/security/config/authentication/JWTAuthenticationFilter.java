@@ -23,55 +23,53 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
-	@Autowired
-	private JwtService jwtService;
+    @Autowired
+    private JwtService jwtService;
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
 
-		String header = request.getHeader("Authorization");
+        String header = request.getHeader("Authorization");
 
-		if (header == null || !header.startsWith("Bearer")) {
+        if (header == null || !header.startsWith("Bearer")) {
 
-			filterChain.doFilter(request, response);
+            filterChain.doFilter(request, response);
 
-			return;
-		}
+            return;
+        }
 
-		String token = header.substring(7);
+        String token = header.substring(7);
 
-		if (token == null || !jwtService.isAccessToken(token)) {
+        if (token == null || !jwtService.isAccessToken(token)) {
 
-			filterChain.doFilter(request, response);
+            filterChain.doFilter(request, response);
 
-			return;
-		}
+            return;
+        }
 
-		Claims payload = jwtService.parse(token).getPayload();
+        Claims payload = jwtService.parse(token).getPayload();
 
-		String userName = payload.getSubject();
+        String userName = payload.getSubject();
 
-		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userName, null,
-				null);
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userName, null,
+                null);
 
-		authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-		if (SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
 
-			// Final line
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-		}
-		filterChain.doFilter(request, response);
+            // Final line
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+        filterChain.doFilter(request, response);
 
-	}
+    }
 
-	@Override
-	protected boolean shouldNotFilter(HttpServletRequest request) {
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
 
-		String uri = request.getRequestURI();
-
-		return uri.startsWith("/security/api/v1/login") || uri.startsWith("/user-mgmt/api/v1/validate/user");
-	}
-
+        String uri = request.getServletPath(); // use servletPath instead
+        return uri.equals("/api/v1/login") || uri.equals("/api/v1/validate/user") || uri.equals("/api/v1/register-normal-user");
+    }
 }

@@ -28,6 +28,12 @@
 			<version>${project.version}</version>
 		</dependency>
 
+	<dependency>
+		<groupId>subrat-code-base</groupId>
+		<artifactId>user-mgmt-repository</artifactId>
+		<version>${project.version}</version>
+	</dependency>
+
 <!-- Source: https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
         <dependency>
           <groupId>io.jsonwebtoken</groupId>

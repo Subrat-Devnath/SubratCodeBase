@@ -1,8 +1,13 @@
 package com.user.mgmt.service.impl;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Set;
 import java.util.UUID;
 
+import com.user.mgmt.client.dtos.RoleType;
+import com.user.mgmt.client.dtos.RolesDTO;
+import com.user.mgmt.repository.RolesRepository;
+import com.user.mgmt.repository.entity.RolesEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -20,76 +25,93 @@ import com.workflow.client.constants.WorkflowProcessDefinationKeys;
 @Service
 public class UserServiceImpl implements UserService {
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	@Autowired
-	private WorkflowClient workflowClient;
+    @Autowired
+    private RolesRepository rolesRepository;
 
-	@Autowired
-	private PasswordEncryptor passwordEncryptor;
+    @Autowired
+    private WorkflowClient workflowClient;
 
-	@Override
-	public void addUser(UserDto userDto) {
+    @Autowired
+    private PasswordEncryptor passwordEncryptor;
 
-		try {
-			String userSalt = UUID.randomUUID().toString();
-			userDto.setPasswordSecrest(userSalt);
+    @Override
+    public void addUser(UserDto userDto) {
 
-			String encryptedPassword = passwordEncryptor.encrypt(userDto.getPassword(), userSalt);
-			userDto.setPassword(encryptedPassword);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        try {
+            String userSalt = UUID.randomUUID().toString();
+            userDto.setPasswordSecrest(userSalt);
 
-		UserEntity userEntity = ObjectBuilder.buildDtoFromEntity(userDto, null, UserEntity.class);
-		userRepository.addUser(userEntity);
-	}
+            String encryptedPassword = passwordEncryptor.encrypt(userDto.getPassword(), userSalt);
+            userDto.setPassword(encryptedPassword);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-	@Override
-	public UserDto getUserById(String id) {
-		UserEntity userById = userRepository.getUserById(id);
-		if (userById == null) {
-			return null;
-		}
-		return ObjectBuilder.buildDtoFromEntity(userById, null, UserDto.class);
-	}
+        UserEntity userEntity = ObjectBuilder.buildDtoFromEntity(userDto, null, UserEntity.class);
 
-	@Override
-	public UserDto getUserByUserName(String userName) {
+        RolesEntity rolesEntity = rolesRepository
+                .getRoleByName(RoleType.ROLE_USER.name());
 
-		if (StringUtils.isEmpty(userName)) {
-			return null;
-		}
+        if (rolesEntity == null) {
+            return;
+        }
 
-		UserEntity userByUserName = userRepository.getUserByUserName(userName);
+        userEntity.setRoles(Set.of(rolesEntity));
 
-		if (userByUserName == null) {
-			return null;
-		}
-		return ObjectBuilder.buildDtoFromEntity(userByUserName, null, UserDto.class);
-	}
+        userRepository.addUser(userEntity);
+    }
 
-	@Override
-	public UserDto validateUserAndGet(LoginRequest loginRequest) {
-		UserDto userByUserName = getUserByUserName(loginRequest.getUserName());
+    @Override
+    public UserDto getUserById(String id) {
+        UserEntity userById = userRepository.getUserById(id);
+        if (userById == null) {
+            return null;
+        }
+        return ObjectBuilder.buildDtoFromEntity(userById, null, UserDto.class);
+    }
 
-		try {
-			String encrypt = passwordEncryptor.encrypt(loginRequest.getPassword(), userByUserName.getPasswordSecrest());
+    @Override
+    public UserDto getUserByUserName(String userName) {
 
-			if (userByUserName.getPassword().equals(encrypt)) {
-				return userByUserName;
-			}
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
+        if (StringUtils.isEmpty(userName)) {
+            return null;
+        }
 
-		return null;
-	}
+        UserEntity userByUserName = userRepository.getUserByUserName(userName);
 
-	@Override
-	public void sendMessageUsingWorkflow() {
-		workflowClient.printHellowWorld(WorkflowProcessDefinationKeys.WORKFLOW_HELLO);
-	}
+        if (userByUserName == null) {
+            return null;
+        }
+        return ObjectBuilder.buildDtoFromEntity(userByUserName, null, UserDto.class);
+    }
+
+    @Override
+    public UserDto validateUserAndGet(LoginRequest loginRequest) {
+        UserDto userByUserName = getUserByUserName(loginRequest.getUserName());
+
+        if (userByUserName == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        try {
+            String encrypt = passwordEncryptor.encrypt(loginRequest.getPassword(), userByUserName.getPasswordSecrest());
+
+            if (userByUserName.getPassword().equals(encrypt)) {
+                return userByUserName;
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public void sendMessageUsingWorkflow() {
+        workflowClient.printHellowWorld(WorkflowProcessDefinationKeys.WORKFLOW_HELLO);
+    }
 
 }

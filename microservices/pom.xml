@@ -37,12 +37,6 @@
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>subrat-code-base</groupId>
-			<artifactId>common-service</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
 	</dependencies>
 
 	<dependencyManagement>
@@ -79,6 +73,12 @@
 				<groupId>org.springframework.kafka</groupId>
 				<artifactId>spring-kafka</artifactId>
 				<version>${kafka.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>subrat-code-base</groupId>
+				<artifactId>common-service</artifactId>
+				<version>${project.version}</version>
 			</dependency>
 
 		</dependencies>

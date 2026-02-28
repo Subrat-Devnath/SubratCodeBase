@@ -1,0 +1,71 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /kafka
+    
+spring:
+  application:
+    name: kafka
+    
+##---- kafka properties -------------------
+
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+    consumer:
+      bootstrap-servers: localhost:9092
+      auto-offset-reset: latest
+      group-id: message
+      listener:
+        ack-mode: MANUAL_IMMEDIATE
+      fetch-max-wait: 60s
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: false
+      properties:
+        session:
+          timeout:
+            ms: 1200000 # 20 min (group.max.session.timeout.ms > session.timeout.ms && group.min.session.timeout.ms < session.timeout.ms)
+        heartbeat:
+          interval:
+            ms: 5000 # 30 sec (session.timeout.ms/3 = heartbeat.interval.ms)
+        max:
+          poll:
+            interval:
+              ms: 30000 # 30 min Time for processing one message 
+        request:
+          timeout:
+            ms: 1260000 # 21 min (session.timeout.ms + fetch-max-wait = request.timeout.ms)
+        #fetch:
+          #max:
+            #bytes: 52428800      
+      
+eureka:
+  client:
+    register-with-eureka: true       # restister to eureka
+    fetch-registry: true    
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+      #defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+
+##--------- fien properties ---------
+
+user:
+  contextPath: "/user"
+  url: "http://127.0.0.1:8081" 
+
+kafka:
+  contextPath: "/kafka"
+  url: "http://127.0.0.1:8082"    
+        
+workflow:
+  contextPath: "/workflow"
+  url: "http://127.0.0.1:8083"       
+
+security:
+  contextPath: "/security"
+  url: "http://127.0.0.1:8084"       
+      

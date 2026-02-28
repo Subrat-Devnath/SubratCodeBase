@@ -30,12 +30,6 @@
 
 		<dependency>
 			<groupId>subrat-code-base</groupId>
-			<artifactId>security-client</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>subrat-code-base</groupId>
 			<artifactId>security-config</artifactId>
 			<version>${project.version}</version>
 		</dependency>

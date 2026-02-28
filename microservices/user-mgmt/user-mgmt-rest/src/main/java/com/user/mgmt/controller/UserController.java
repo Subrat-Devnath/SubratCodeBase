@@ -20,7 +20,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@PostMapping(value = "/user/add")
+	@PostMapping(value = "/register-normal-user")
 	public boolean addUser(@RequestBody UserDto userDto) {
 		userService.addUser(userDto);
 		return true;
